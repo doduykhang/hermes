@@ -1,0 +1,92 @@
+version: "3"
+
+services:
+  gateway-service:
+    build:
+      context: ./../gateway
+      dockerfile: ./../gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      SERVER_PORT: 8080
+      REDIS_HOST: host.docker.internal
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: 
+      GRPC_ACCOUNT: "account-service:8080"
+      PROXY_CONVERSATION: "http://conversation-service:8080"
+      PROXY_CHAT: "http://chat-service:8080"
+    extra_hosts:    
+      - "host.docker.internal:host-gateway"
+
+  account-service:
+    build:
+      context: ./../account
+      dockerfile: ./../account/Dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: host.docker.internal
+      DB_PORT: "3306"
+      DB_USER: "monty"
+      DB_PASSWORD: "B@obao987"
+      DB_NAME: "hermes_account"
+      RABBITMQ_HOST: host.docker.internal
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: khang
+      RABBITMQ_PASSWORD: password
+      RABBITMQ_VHOST: 
+    extra_hosts:    
+      - "host.docker.internal:host-gateway"
+
+  conversation-service:
+    build:
+      context: ./../conversation
+      dockerfile: ./../conversation/Dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: host.docker.internal
+      DB_PORT: "3306"
+      DB_USER: "monty"
+      DB_PASSWORD: "B@obao987"
+      DB_NAME: "hermes_conversation"
+      RABBITMQ_HOST: host.docker.internal
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: khang
+      RABBITMQ_PASSWORD: password
+      RABBITMQ_VHOST: 
+    extra_hosts:    
+      - "host.docker.internal:host-gateway"
+
+  chat-service:
+    build:
+      context: ./../chat
+      dockerfile: ./../chat/Dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: host.docker.internal
+      DB_PORT: "3306"
+      DB_USER: "monty"
+      DB_PASSWORD: "B@obao987"
+      DB_NAME: "hermes_chat"
+      REDIS_HOST: host.docker.internal
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: 
+      RABBITMQ_HOST: host.docker.internal
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: khang
+      RABBITMQ_PASSWORD: password
+      RABBITMQ_VHOST: 
+    extra_hosts:    
+      - "host.docker.internal:host-gateway"
+

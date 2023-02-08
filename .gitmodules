@@ -1,0 +1,15 @@
+[submodule "account"]
+	path = account
+	url = https://github.com/doduykhang/hermes-account.git
+[submodule "chat"]
+	path = chat
+	url = https://github.com/doduykhang/hermes-chat-service
+[submodule "conversation"]
+	path = conversation
+	url = https://github.com/doduykhang/hermes-conversation-service.git
+[submodule "gateway"]
+	path = gateway
+	url = https://github.com/doduykhang/hermes-gateway.git
+[submodule "client"]
+	path = client
+	url = https://github.com/doduykhang/hermes-client
